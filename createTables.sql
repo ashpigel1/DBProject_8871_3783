@@ -1,0 +1,90 @@
+CREATE TABLE Rifle
+(
+  rID INT NOT NULL,
+  Ammo_type VARCHAR2 NOT NULL,
+  Valid VARCHAR2 NOT NULL,
+  PRIMARY KEY (rID),
+  FOREIGN KEY (Ammo_type) REFERENCES Ammo(Ammo_type)
+);
+
+CREATE TABLE Soldier
+(
+  sID INT NOT NULL,
+  rank VARCHAR2 NOT NULL,
+  position VARCHAR2 NOT NULL,
+  name VARCHAR2 NOT NULL,
+  Enlisted_date DATE NOT NULL,
+  rID INT NOT NULL,
+  PRIMARY KEY (sID),
+  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+);
+
+CREATE TABLE Armory_worker
+(
+  aID INT NOT NULL,
+  name VARCHAR2 NOT NULL,
+  phone_number VARCHAR(15) NOT NULL,
+  PRIMARY KEY (aID)
+);
+
+CREATE TABLE Rifle_Type
+(
+  rID INT NOT NULL,
+  type VARCHAR2 NOT NULL,
+  PRIMARY KEY (rID),
+  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+);
+
+CREATE TABLE Attachment
+(
+  attachID INT NOT NULL,
+  rID INT,
+  type VARCHAR2 NOT NULL,
+  PRIMARY KEY (attachID),
+  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+);
+
+CREATE TABLE Ammo
+(
+  Ammo_type VARCHAR2 NOT NULL,
+  Amount INT NOT NULL,
+  PRIMARY KEY (Ammo_type)
+);
+
+CREATE TABLE Testing
+(
+  aID INT NOT NULL,
+  rID INT NOT NULL,
+  PRIMARY KEY (aID, rID),
+  FOREIGN KEY (aID) REFERENCES Armory_worker(aID),
+  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+);
+
+CREATE TABLE Rifle_Type
+(
+  typeID INT NOT NULL,
+  type_name VARCHAR2 NOT NULL,
+  PRIMARY KEY (typeID)
+);
+
+CREATE TABLE Soldier_Special_qualification
+(
+  sID INT NOT NULL,
+  typeID INT NOT NULL,
+  PRIMARY KEY (sID, typeID),
+  FOREIGN KEY (sID) REFERENCES Soldier(sID),
+  FOREIGN KEY (typeID) REFERENCES Rifle_Type(typeID)
+);
+
+
+CREATE TABLE Order_ammo
+(
+  Order_ID INT NOT NULL AUTO_INCREMENT,
+  Order_date DATE NOT NULL,
+  Amount INT NOT NULL,
+  Ammo_type VARCHAR2 NOT NULL,
+  aID INT NOT NULL,
+  PRIMARY KEY (Order_ID),
+  FOREIGN KEY (Ammo_type) REFERENCES Ammo(Ammo_type),
+  FOREIGN KEY (aID) REFERENCES Armory_worker(aID)
+);
