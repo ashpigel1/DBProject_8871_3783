@@ -27,12 +27,12 @@ CREATE TABLE Armory_worker
   PRIMARY KEY (aID)
 );
 
-CREATE TABLE Rifle_Type
+CREATE TABLE Platoon_Weapon
 (
-  rID INT NOT NULL,
-  type VARCHAR2 NOT NULL,
-  PRIMARY KEY (rID),
-  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+  wID INT NOT NULL,
+  Type_name VARCHAR2 NOT NULL,
+  Amount INT NOT NULL,
+  PRIMARY KEY (wID)
 );
 
 CREATE TABLE Attachment
@@ -48,38 +48,35 @@ CREATE TABLE Ammo
 (
   Ammo_type VARCHAR2 NOT NULL,
   Amount INT NOT NULL,
+  Explosive CHAR(1) NOT NULL, -- 'Y' for yes/true, 'N' for no/false
   PRIMARY KEY (Ammo_type)
 );
 
-CREATE TABLE Testing
+CREATE TABLE Rifle_Inspection
 (
   aID INT NOT NULL,
   rID INT NOT NULL,
-  PRIMARY KEY (aID, rID),
+  Inspection_Date DATE NOT NULL,
+  PRIMARY KEY (aID, rID, Inspection_Date),
   FOREIGN KEY (aID) REFERENCES Armory_worker(aID),
   FOREIGN KEY (rID) REFERENCES Rifle(rID)
-);
-
-CREATE TABLE Rifle_Type
-(
-  typeID INT NOT NULL,
-  type_name VARCHAR2 NOT NULL,
-  PRIMARY KEY (typeID)
 );
 
 CREATE TABLE Soldier_Special_qualification
 (
   sID INT NOT NULL,
-  typeID INT NOT NULL,
-  PRIMARY KEY (sID, typeID),
+  wID INT NOT NULL,
+  PRIMARY KEY (sID, wID),
   FOREIGN KEY (sID) REFERENCES Soldier(sID),
-  FOREIGN KEY (typeID) REFERENCES Rifle_Type(typeID)
+  FOREIGN KEY (wID) REFERENCES Platoon_Weapon(wID)
 );
 
+-- Oracle does not support AUTO_INCREMENT. You need to create a sequence and trigger for Order_ID.
+CREATE SEQUENCE Order_Ammo_Seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Order_ammo
 (
-  Order_ID INT NOT NULL AUTO_INCREMENT,
+  Order_ID INT NOT NULL,
   Order_date DATE NOT NULL,
   Amount INT NOT NULL,
   Ammo_type VARCHAR2 NOT NULL,
@@ -88,3 +85,12 @@ CREATE TABLE Order_ammo
   FOREIGN KEY (Ammo_type) REFERENCES Ammo(Ammo_type),
   FOREIGN KEY (aID) REFERENCES Armory_worker(aID)
 );
+
+-- Create a trigger to auto-increment Order_ID using the sequence
+CREATE OR REPLACE TRIGGER Order_ammo_BI
+BEFORE INSERT ON Order_ammo
+FOR EACH ROW
+BEGIN
+  SELECT Order_Ammo_Seq.NEXTVAL INTO :new.Order_ID FROM dual;
+END;
+/

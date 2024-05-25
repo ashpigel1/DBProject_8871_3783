@@ -3,17 +3,14 @@
 -- Drop tables with CASCADE CONSTRAINTS to automatically drop any dependent foreign key constraints
 DROP TABLE Order_ammo CASCADE CONSTRAINTS;
 DROP TABLE Soldier_Special_qualification CASCADE CONSTRAINTS;
-DROP TABLE Testing CASCADE CONSTRAINTS;
+DROP TABLE Rifle_Inspection CASCADE CONSTRAINTS; -- Updated from Testing
 DROP TABLE Attachment CASCADE CONSTRAINTS;
 DROP TABLE Soldier CASCADE CONSTRAINTS;
 DROP TABLE Rifle CASCADE CONSTRAINTS;
 DROP TABLE Ammo CASCADE CONSTRAINTS;
 DROP TABLE Armory_worker CASCADE CONSTRAINTS;
-DROP TABLE Rifle_Type CASCADE CONSTRAINTS;
+DROP TABLE Platoon_Weapon CASCADE CONSTRAINTS; -- Updated from Rifle_Type
 
--- Drop sequences
+-- Drop sequences (if they exist and are used in your database)
 DROP SEQUENCE Order_Ammo_Seq;
-DROP SEQUENCE Attachment_Seq;
-DROP SEQUENCE Armory_Worker_Seq;
-DROP SEQUENCE Rifle_Seq;
-DROP SEQUENCE Rifle_Type_Seq;
+-- Other sequences would be dropped here if they exist
