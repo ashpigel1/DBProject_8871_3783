@@ -15,19 +15,20 @@ CREATE TABLE Armory_worker
   Phone_Number VARCHAR(15) NOT NULL, -- Adjusted the size to 15 to match earlier definition
   PRIMARY KEY (aID)
 );
-CREATE TABLE Rifle_Assigned
+
+-- Create the Platoon_Weapon table
+CREATE TABLE Platoon_Weapon
 (
-  rID INT NOT NULL,
-  sID INT NOT NULL
-  Date_Assigned DATE NOT NULL
-  PRIMARY KEY (rID,sID)
-)
+  wID INT NOT NULL,
+  Type_name VARCHAR2(20) NOT NULL,
+  Amount INT NOT NULL,
+  PRIMARY KEY (wID)
+);
 
 -- Create the Rifle table, which references the Ammo table
 CREATE TABLE Rifle
 (
   rID INT NOT NULL,
-  rType VARCHAR2(20) NOT NULL,
   Ammo_type VARCHAR2(20) NOT NULL,
   Valid VARCHAR2(1) NOT NULL, -- 'Y' for yes/true, 'N' for no/false
   PRIMARY KEY (rID),
@@ -93,3 +94,12 @@ CREATE TABLE Rifle_Inspection
   FOREIGN KEY (rID) REFERENCES Rifle(rID)
 );
 
+-- Create the Soldier_Special_qualification table, which references the Soldier and Platoon_Weapon tables
+CREATE TABLE Soldier_Special_qualification
+(
+  sID INT NOT NULL,
+  wID INT NOT NULL,
+  PRIMARY KEY (sID, wID),
+  FOREIGN KEY (sID) REFERENCES Soldier(sID),
+  FOREIGN KEY (wID) REFERENCES Platoon_Weapon(wID)
+);
