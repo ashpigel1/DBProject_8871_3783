@@ -38,13 +38,10 @@ CREATE TABLE Rifle
 CREATE TABLE Soldier
 (
   sID INT NOT NULL,
-  Rank VARCHAR2(50) NOT NULL,
-  Position VARCHAR2(50) NOT NULL,
+  Rank VARCHAR2(20) NOT NULL,
   Name VARCHAR2(50) NOT NULL,
   Enlisted_date DATE NOT NULL,
-  rID INT NOT NULL,
-  PRIMARY KEY (sID),
-  FOREIGN KEY (rID) REFERENCES Rifle(rID)
+  PRIMARY KEY (sID)
 );
 
 -- Create the Attachment table, which references the Rifle table
