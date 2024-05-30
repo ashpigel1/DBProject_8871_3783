@@ -91,13 +91,14 @@ BEGIN
     FROM dual;
 
     -- Insert the data into the Soldier table
-    INSERT INTO Soldier (sID, Rank, Position, Name, Enlisted_date)
-    VALUES (i + 2000, rank, 'Position', random_first_name || ' ' || random_last_name, enlistment_date);
+    INSERT INTO Soldier (sID, Rank, Name, Enlisted_date)
+    VALUES (i + 2000, rank, random_first_name || ' ' || random_last_name, enlistment_date);
   END LOOP;
   COMMIT;
 END;
 /
 
+    -- Insert the data into the Attachment table
 DECLARE
   attachment_types DBMS_SQL.VARCHAR2_TABLE := DBMS_SQL.VARCHAR2_TABLE('Scope', 'Assault handle', 'flashlight', 'Infra-red laser');
   rifle_id_base CONSTANT INT := 500;
