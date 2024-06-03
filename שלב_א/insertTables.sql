@@ -46,6 +46,7 @@ DECLARE
   random_last_name VARCHAR2(25);
   rank VARCHAR2(50);
   enlistment_date DATE;
+
 -- Insert data into the Armory_Worker table
 BEGIN
   FOR i IN 1..400 LOOP
@@ -124,6 +125,58 @@ BEGIN
       attach_id := attach_id + 1;
     END LOOP;
   END LOOP;
+  COMMIT;
+END;
+/
+
+    -- Insert the data into the ammo order table
+DECLARE
+  random_date DATE;
+  ammo_types DBMS_SQL.VARCHAR2_TABLE;
+  random_ammo_type VARCHAR2(20);
+  random_worker_id INT;
+BEGIN
+  -- Populate ammo_types array with the ammo types available in the Ammo table
+  ammo_types(1) := 'Normal';
+  ammo_types(2) := 'Green';
+  ammo_types(3) := 'Large';
+  ammo_types(4) := 'Sniper_bullets';
+  ammo_types(5) := 'Hand_Grenade';
+  ammo_types(6) := 'NA_Grenade';
+  ammo_types(7) := 'NT_Grenade';
+  ammo_types(8) := 'Smoke_Grenade';
+
+  FOR i IN 1..400 LOOP
+    -- Generate a random date within the last two years
+    random_date := TRUNC(DBMS_RANDOM.VALUE(SYSDATE - INTERVAL '2' YEAR, SYSDATE));
+    random_ammo_type := ammo_types(TRUNC(DBMS_RANDOM.VALUE(1, 9)));
+    random_worker_id := TRUNC(DBMS_RANDOM.VALUE(1001, 1401));
+    
+    INSERT INTO Order_ammo (Order_ID, Order_date, Amount, Ammo_type, aID)
+    VALUES (i + 3000, random_date, TRUNC(DBMS_RANDOM.VALUE(1, 1500)), random_ammo_type, random_worker_id);
+  END LOOP;
+
+  COMMIT;
+END;
+/
+
+    -- Insert the data into the rifle inspection table
+DECLARE
+  random_date DATE;
+  random_worker_id INT;
+  random_rifle_id INT;
+BEGIN
+  -- Loop to create 400 random rifle inspections
+  FOR i IN 1..400 LOOP
+    random_date := TRUNC(DBMS_RANDOM.VALUE(SYSDATE - INTERVAL '2' YEAR, SYSDATE));
+    random_worker_id := TRUNC(DBMS_RANDOM.VALUE(1001, 1401));
+    random_rifle_id := TRUNC(DBMS_RANDOM.VALUE(501, 901));
+
+    -- Insert the inspection into the Rifle_Inspection table
+    INSERT INTO Rifle_Inspection (aID, rID, Inspection_Date)
+    VALUES (random_worker_id, random_rifle_id, random_date);
+  END LOOP;
+
   COMMIT;
 END;
 /
